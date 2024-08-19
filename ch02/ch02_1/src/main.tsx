@@ -10,17 +10,17 @@ import './index.css'
 // root.render(virtualDOM)
 
 const children = [
-  <li>
+  <li key="0">
     <a href="http://www.google.com" target="_blank">
       <p>go to Google</p>
     </a>
   </li>,
-  <li>
+  <li key="1">
     <a href="http://www.twitter.com" target="_blank">
       <p>go to Twitter</p>
     </a>
   </li>,
-  <li>
+  <li key="2">
     <a href="http://www.facebook.com" target="_blank">
       <p>go to Facebook</p>
     </a>
