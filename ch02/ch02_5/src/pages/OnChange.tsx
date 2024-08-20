@@ -38,10 +38,10 @@ export default function OnChange() {
       {fruit}
     </option>
   ))
-  const handleFruit = (e: any, index: number) => {
+  const handleFruit = (e: any) => {
     setChoice(e.target.value)
     console.log(e.target.value)
-    console.log(index)
+    console.log(e.target.selectedIndex)
   }
 
   return (
