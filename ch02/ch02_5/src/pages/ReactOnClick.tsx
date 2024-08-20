@@ -14,6 +14,7 @@ export default function ReactOnClick() {
   // 리액트 코어 컴포넌트의 속성은 카멜표기법.
   // 리액트 컴포넌트의 이벤트 속성에 설정하는 콜백함수는
   // e의 타입이 Event가 아닌 SyntheticEvent여야 함.sythetic(합성의,조합의)
+  // 출력의 결과가 물리 DOM의 이벤트와 크게 다르지 않다
   return (
     <>
       <span>ReactOnClick</span>
