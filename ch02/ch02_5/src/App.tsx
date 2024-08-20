@@ -2,7 +2,7 @@ import './App.css'
 import DispatchEvent from './pages/DispatchEvent'
 import DragDrop from './pages/DragDrop'
 import EventBubbling from './pages/EventBubbling'
-import EventLisner from './pages/EventListner'
+import EventListener from './pages/EventListener'
 import FileDrop from './pages/FileDrop'
 import FileInput from './pages/FileInput'
 import OnChange from './pages/OnChange'
@@ -24,7 +24,7 @@ function App() {
       <DispatchEvent />
       <ReactOnClick />
       <OnClick />
-      <EventLisner />
+      <EventListener />
     </div>
   )
 }
