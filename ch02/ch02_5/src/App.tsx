@@ -1,6 +1,3 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import DispatchEvent from './pages/DispatchEvent'
 import DragDrop from './pages/DragDrop'
@@ -15,8 +12,6 @@ import StopPropagation from './pages/StopPropagation'
 import VariousInputs from './pages/VariousInputs'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <div>
       <FileDrop />
