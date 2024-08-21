@@ -1,6 +1,6 @@
 import Tailwindcss from './pages/Tailwindcss'
 import Color from './pages/Color'
-import TextTest from './pages/Texttest'
+import TextTest from './pages/TextsTest'
 import './App.css'
 
 function App() {
