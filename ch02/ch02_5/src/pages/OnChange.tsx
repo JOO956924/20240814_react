@@ -19,14 +19,17 @@ export default function OnChange() {
 
   // react-select 관련 start
   const options = [
-    {value: 'CS', label: 'CS'},
-    {value: '프론트', label: '프론트'},
+    {value: 'front', label: '프론트엔드'},
+    {value: 'back', label: '백엔드'},
+    {value: 'full-stack', label: '풀스택'},
   ]
   const placeholder = '카테고리 선택'
   const [selected, setSelected] = useState('')
   const onChangeSelect = (e: any) => {
-    if (e) setSelected(e.value)
-    else setSelected('')
+    if (e) {
+      setSelected(e.value)
+      console.log(e.value)
+    } else setSelected('')
   }
   // react-select 관련 end
 
@@ -40,8 +43,9 @@ export default function OnChange() {
   ))
   const handleFruit = (e: any) => {
     setChoice(e.target.value)
-    console.log(e.target.value)
-    console.log(e.target.selectedIndex)
+    console.log(e.target.value) // option value
+    console.log(e.target.selectedIndex) // option index
+    console.log(e.target.options[e.target.selectedIndex].text) // text
   }
 
   return (
@@ -55,11 +59,16 @@ export default function OnChange() {
       <input type="checkbox" onChange={onChangeChecked} defaultChecked />
       <input type="file" onChange={onChangeFiles} multiple accept="images/*" />
       <Select
+        key="1"
         onChange={onChangeSelect}
         options={options}
         placeholder={placeholder}></Select>
-      <select value={choice} onChange={handleFruit}>
-        {options2}
+      <select key="2" value={choice} onChange={handleFruit}>
+        {options.map((item, idx) => (
+          <option key={idx} value={item.value}>
+            {item.label}
+          </option>
+        ))}
       </select>
     </div>
   )

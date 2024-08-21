@@ -1,3 +1,7 @@
 export default function CopyMe() {
-  return <div>CopyMe</div>
+  return (
+    <div>
+      <h1>CopyMe</h1>
+    </div>
+  )
 }
