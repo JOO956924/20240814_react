@@ -11,7 +11,7 @@ export default function PositionTest() {
     <Div>
       <Title>PositionTest</Title>
       <Div className="relative border-2 border-gray-500"
-        src={src} height="10rem">
+        src={src} height="10rem" style={{overflow: 'scroll'}}>
         <Div className="absolute p-2 text-white bg-red-500"
           left="1rem" top="1rem">{icons}</Div>
         <Div className="absolute p-2 text-white bg-blue-500"
