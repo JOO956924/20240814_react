@@ -4,7 +4,7 @@ import {makeClassName} from './textUtils'
 // prettier-ignore
 type TextProps = 
   DetailedHTMLProps<HTMLAttributes<HTMLParagraphElement>,HTMLParagraphElement>
-// TextProps p태그가 가지는 모든 속성들을 한꺼번에 할당받은 객체
+// TextProps: p태그가 가지는 모든 속성들을 한꺼번에 할당받은 객체
 export type TitleProps = TextProps & {numberOfLines?: number}
 export const Title: FC<TitleProps> = ({
   className: _className,
