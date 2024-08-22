@@ -8,6 +8,6 @@ export type IconProps = ReactSpanProps & {
 
 // prettier-ignore
 export const Icon: FC<IconProps> = ({name, className: _className, ...props}) => {
-  const className = ['material-symbols-outlined', _className].join(' ')
+  const className = 'material-symbols-outlined'
   return <span {...props} className={className}>{name}</span>
 }

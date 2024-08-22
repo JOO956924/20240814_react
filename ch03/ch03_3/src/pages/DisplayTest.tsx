@@ -8,7 +8,7 @@ export default function DisplayTest() {
     </div>
   ))
   const blockChildren = D.range(1, 5 + 1).map(number => (
-    <div key={number} className="block w-8 h-8 m-4 text-center text-gray-700 bg-sky-300">
+    <div key={number} className="block h-8 m-4 text-center text-gray-700 bg-sky-300">
       {number}
     </div>
   ))

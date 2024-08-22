@@ -9,7 +9,7 @@ export type AvatarProps = DivProps & {
 export const Avatar: FC<AvatarProps> = ({
   className: _className, style, src, size, ...props 
 }) => {
-  const w_or_h = size ?? '3rem'
+  const w_or_h = size ?? '3rem' //?? : null,undefined값에만
   const className = ['rounded-full bg-cover bg-gray-300', _className].join(' ')
   return (
     <Div
