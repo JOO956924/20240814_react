@@ -15,11 +15,11 @@ export type DivProps =
 // prettier-ignore
 export const Div: FC<DivProps> = ({
   width,height,style: _style,src,className: _className,left,right,
-  top,bottom,minwidth,maxwidth,minHeight,maxheight,...props
+  top,bottom,minWidth,maxWidth,minHeight,maxHeight, ...props
 }) => {
   const style = {
     ..._style,width,height,backgroundImage: src && `url(${src})`,
-    left,right,top,bottom,minwidth,maxwidth,minHeight,maxheight,
+    left,right,top,bottom,minWidth,maxWidth,minHeight,maxHeight,
   }
   // box-sizing :  컨테이너 크기를 결정(content-box, border-box, padding-box, inherit)
   // tailwindcss에는                  box-content, box-border 2가지가 존재
