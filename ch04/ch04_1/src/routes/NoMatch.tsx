@@ -10,7 +10,7 @@ export default function NoMatch() {
   }, [navigate])
   return (
     <div>
-      <div className="flex p-4 bg-gray-200">
+      <div className="flex p-4 ">
         <Link to="/">Home</Link>
         <Link to="/login" className="ml-4">
           Login
