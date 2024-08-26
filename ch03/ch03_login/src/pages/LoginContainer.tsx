@@ -1,8 +1,13 @@
 import {Title} from '../components'
+import {useNavigate} from 'react-router-dom'
 
 export default function LoginContainer() {
   const setLabel = (wSize: number): object => {
     return {width: wSize + 'px', display: 'inline-block'}
+  }
+  const navigate = useNavigate()
+  const goToJoin = () => {
+    navigate('/join')
   }
 
   return (
@@ -45,7 +50,7 @@ export default function LoginContainer() {
             <span style={setLabel(70)}>Login</span>
           </button>
           <label htmlFor="exampleInputPassword1" style={setLabel(20)}></label>
-          <button type="button" className="btn btn-info">
+          <button type="button" className="btn btn-info" onClick={goToJoin}>
             <span style={setLabel(70)}>Join</span>
           </button>
         </div>
