@@ -59,6 +59,32 @@ function App() {
   //   </div>
   // )
 
+  // 리액트 함수 실행 불가
+  //a) 지역변수 블록 안에서 훅 호출 불가
+  /*
+  export default function App(){
+    { //지역 변수 블록 사용불가
+      const[x, setX] = useState<number>(0) 
+    }
+  }
+  */
+  //b) if블록 안에서 사용 불가
+  /*
+  export default function App(){
+    if(true) { //지역 변수 블록 사용불가
+      const[x, setX] = useState<number>(0) 
+    }
+  }
+  */
+  //c) 비동기 콜백 함수를 입력받는 훅은 사용 불가
+  /*
+  export default function App(){
+    useEffect(async () => { //사용불가
+      await Promise.resolve(1)
+    },[])
+  }
+  */
+
   //5) custom hook 함수 사용(재사용을 목적)
   const today = useClock()
   return <Clock today={today} />
