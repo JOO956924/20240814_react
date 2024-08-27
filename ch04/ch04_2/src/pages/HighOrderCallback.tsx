@@ -13,6 +13,7 @@ export default function HighOrderCallback() {
   // 컴포넌트에서 props 가 바뀌지 않았으면 Virtual DOM 에 새로 렌더링하는 것 조차 하지 않고
   // 컴포넌트의 결과물을 재사용 하는 최적화 작업을 할건데 이 작업을 하려면, 함수를 재사용하는것이 필수
 
+  // 고차함수는 콜백함수에 어떤 정보를 추가로 전달하려고 할 때 사용
   const onClick = useCallback((name: string) => () => alert(`${name} clicked`), [])
 
   const buttons = useMemo(

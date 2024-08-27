@@ -7,10 +7,8 @@ export default function CreateOrUseTest() {
   const headTexts = useOrCreate<string[]>('headTexts', () => [
     'No.', 'Name', 'Job Title', 'Email Adress'
   ])
-  console.log('headTexts >>' + headTexts)
-
   const users = useOrCreate<D.IUser[]>('users', () =>
-    D.makeArray(10).map(D.makeRandomUser)
+    D.makeArray(100).map(D.makeRandomUser)
   )
 
   const head = useOrCreate('head', () =>
@@ -34,8 +32,8 @@ export default function CreateOrUseTest() {
   return (
     <div className="mt-4">
       <Title>CreateOrUseTest</Title>
-      <div className="p-4 mt-4 overflow-x-auto">
-        <table className="table w-full table-zebra table-compact">
+      <div className="overflow-x-auto mt-4 p-4">
+        <table className="table table-zebra table-compact w-full">
           <thead>
             <tr>{head}</tr>
           </thead>
