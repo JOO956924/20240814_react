@@ -17,7 +17,7 @@ export default function BasicForm() {
   const onPasteName = useCallback(
     (e: ClipboardEvent<HTMLInputElement>) => {
       const {clipboardData} = e
-      setName(notUsed => clipboardData.getData('text'))
+      //setName(notUsed => clipboardData.getData('text'))
       console.log(name)
     },
     [name]
