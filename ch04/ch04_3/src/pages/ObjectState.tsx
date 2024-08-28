@@ -27,39 +27,47 @@ export default function ObjectState() {
     },
     [form]
   )
-  const onChangeName = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    // 1) 객체의 형태로 구현
-    // const name = e.target.value
-    // setForm(/*값을 구현*/)
+  const onChangeName = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      // 1) 객체의 형태로 구현
+      // const name = e.target.value
+      // setForm(/*값을 구현*/)
 
-    // 2) 객체의 형태로 구현 :: 얕은 복사
-    // const newForm = form
-    // newForm.name = e.target.value
-    // setForm(newForm) // 문제 :: form === newForm은 true, 리렌더링 X, 리액트가 내부 변화 감지 못함.
+      // 2) 객체의 형태로 구현 :: 얕은 복사
+      // const newForm = form
+      // newForm.name = e.target.value
+      // setForm(newForm) // 문제 :: form === newForm은 true, 리렌더링 X, 리액트가 내부 변화 감지 못함.
 
-    // 3) 객체의 형태로 구현 :: 깊은 복사
-    // const newForm = Object.assign({}, form)
-    // newForm.name = e.target.value
-    // setForm(newForm) // 문제 :: form === newForm은 false, 리렌더링 O, Object.assign구현의 번거로움.
+      // 3) 객체의 형태로 구현 :: 깊은 복사
+      // const newForm = Object.assign({}, form)
+      // newForm.name = e.target.value
+      // setForm(newForm) // 문제 :: form === newForm은 false, 리렌더링 O, Object.assign구현의 번거로움.
 
-    // 4) 전개 연산자 활용
-    // const newForm = {...form} //깊은 복사
-    // newForm.name = e.target.value
-    // 위의 2줄을 한줄로 표현하면 const newForm = {...form, name: e.target.value}
-    // setForm(newForm)
+      // 4) 전개 연산자 활용
+      // 아래의 2줄을 한줄로 표현하면 const newForm = {...form, name: e.target.value}
+      // const newForm = {...form} //깊은 복사
+      // newForm.name = e.target.value
+      // setForm(newForm)
 
-    // 5) 콜백함수로 구현 : 간단하게
-    // setForm(form => { return {...form, name: e.target.value} }) //return을 사용할 경우
-    /* ※ 복합실행문 : 중괄호 안에 order가 여러 개 if(condition) {order1; order2; order3;} */
-    // setForm(form => {...form, name: e.target.value}) // 에러: return을 지우면 복합실행문으로 인식
+      // 5) 콜백함수로 구현 : 간단하게
+      // setForm(form => { return {...form, name: e.target.value} }) //return을 사용할 경우
+      /* ※ 복합실행문 : 중괄호 안에 order가 여러 개 if(condition) {order1; order2; order3;} */
+      // setForm(form => {...form, name: e.target.value}) // 에러: return을 지우면 복합실행문으로 인식
 
-    // 6) 최종 :  ()를 사용하여 복합실행문이 아니라고 표기
-    setForm(state => ({...state, name: e.target.value}))
-  }, [])
+      // 6) 최종 :  ()를 사용하여 복합실행문이 아니라고 표기
+      setForm(state => ({...state, name: e.target.value}))
+      console.log(form.name)
+    },
+    [form.name]
+  )
 
-  const onChangeEmail = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setForm(form => ({...form, email: e.target.value}))
-  }, [])
+  const onChangeEmail = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setForm(form => ({...form, email: e.target.value}))
+      console.log(form.email)
+    },
+    [form.email]
+  )
 
   return (
     <section className="mt-4">

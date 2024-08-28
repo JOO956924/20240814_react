@@ -7,7 +7,7 @@ export default function ArrayState() {
   const [images, setImages] = useState<string[]>([])
   const addImage = useCallback(
     () => setImages(images => [D.randomImage(200, 100, 50), ...images]),
-    []
+    [images]
   )
   const clearImages = useCallback(() => setImages(notUsed => []), [])
   const children = useMemo(

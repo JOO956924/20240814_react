@@ -14,10 +14,11 @@ export default function BasicForm() {
     },
     [name]
   )
+  // 특별히 정확한 동작을 행하려는 것이 아니라 붙여넣기 이벤트 동작의 활용을 보여줌.
   const onPasteName = useCallback(
     (e: ClipboardEvent<HTMLInputElement>) => {
       const {clipboardData} = e
-      //setName(notUsed => clipboardData.getData('text'))
+      setName(notUsed => clipboardData.getData('text'))
       console.log(name)
     },
     [name]
