@@ -6,7 +6,6 @@ export type ValidatableInputMethods = {
 }
 
 // forwardRef는 컴포넌트가 ref를 사용하여 부모 컴포넌트의 DOM 노드를 노출할 수 있다.
-// forwardRef는 부모 컴포넌트에서 생성한 ref를 자식 컴포넌트로 전달해주는 역할 수행.
 export const ValidatableInput = forwardRef<ValidatableInputMethods, ReactInputProps>(
   function ({type, className: _className, ...inputProps}, methodsRef) {
     const className = useMemo(() => ['input', _className].join(' '), [_className])
