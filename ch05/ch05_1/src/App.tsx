@@ -4,13 +4,13 @@ import ReduxClock from './pages/ReduxClock'
 import UseReducerClock from './pages/UseReducerClock'
 
 /* 아래의 코드는 store를 정의하는 코드가 합쳐져서 복잡해 보임
-//1) 최상위 수준에서 동작하기 위해서는 Provider 최상위에서 선언
-import {Action} from 'redux'
 import {configureStore} from '@reduxjs/toolkit'
+import {Action} from 'redux'
+//1) 최상위 수준에서 동작하기 위해서는 Provider 최상위에서 선언
 // 앱을 구성하는 모든 컴포넌트가 함께 공유할 수 있는 상태를 앱 수준 상태
 // 줄여서 앱상태(app-level-states)
 
-//2) 리덕스 저장소(Redux Store)에 앱상태에서 선언될 변수 선언
+//2) 리덕스 저장소(Redux Store)에 앱상태에서 선언될 변수 선언과 초기화
 type AppState = {
   today: Date
 }
@@ -42,7 +42,7 @@ export default function App() {
 }
 */
 
-// store를 분리해서 간결한 코드 작성
+/* store를 분리해서 간결한 코드 작성 */
 import {useStore} from './store'
 
 export default function App() {

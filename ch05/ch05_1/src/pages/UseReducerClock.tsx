@@ -1,15 +1,8 @@
-import {useSelector} from 'react-redux'
+import {useReducer} from 'react'
 import type {AppState} from '../store'
+import type {SetTodayAction} from '../store/actions'
 import {Div, Title, Subtitle} from '../components'
-
-export default function ReduxClock() {
-  // useSelector :: store에 어떤 내용이 저장되었는지 알려고 할 때 스토어의 상태값을 반환
-  const today = useSelector<AppState, Date>(state => state.today)
-  import {useReducer} from 'react'
-  import type {AppState} from '../store'
-  import type {SetTodayAction} from '../store/actions'
-  import {Div, Title, Subtitle} from '../components'
-  import {useInterval} from '../hooks'
+import {useInterval} from '../hooks'
 
   export default function UseReducerClock() {
     // 리덕스의 상태는 앱의 모든 컴포넌트에서 접근 가능하지만(즉, 전역 상태)
@@ -18,17 +11,25 @@ export default function ReduxClock() {
 
     // useReducer()는 리덕스의 리듀서와 사실상 똑같은 기능 수행
     // useReducer(리듀서, 상태초기값)
+    /* useReducer는 리액트의 훅 함수
+    function useReducer<R extends Reducer<any, any>>(
+      reducer: R,
+      initialState: ReducerState<R>
+      initializer?: undefined
+    ): [ReducerState<R>, Dispatch<ReducerAction<R>>]*/
     const [{today}, dispatch] = useReducer(
+      // reducer
       (state: AppState, action: SetTodayAction) => {
         switch (action.type) {
           case 'setToday':
             return {...state, today: new Date()}
         }
       },
+      //initialState
       {
         today: new Date()
       }
-    )
+    ) //리턴타입 [ReducerState<R>, Dispatch<ReducerAction<R>>]
 
     useInterval(() => {
       dispatch({type: 'setToday', today: new Date()})
