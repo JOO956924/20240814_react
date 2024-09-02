@@ -15,7 +15,7 @@ const Card: FC<UserCardProps> = ({card, onRemove}) => {
     <Div className="m-2 border shadow-lg rounded-xl" width="10rem">
       <Div className="relative h-20" src={image}>
         <Icon
-          name="remove"
+          name="X"
           className="absolute right-1 top-1 btn-primary btn-xs"
           onClick={onRemove}
         />
