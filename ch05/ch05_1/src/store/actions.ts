@@ -1,7 +1,7 @@
 import type {Action} from 'redux'
 // Action은 reducer 함수로 연결된다
 
-// today 변수와'setToday'에 반응하는 Action을 정의한객체
+// `setToday` 변수와'today'에 변수를 갱신하는 SetTodayAction을 생성
 export type SetTodayAction = Action<'setToday'> & {
   today: Date
 }

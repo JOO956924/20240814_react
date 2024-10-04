@@ -1,11 +1,16 @@
 import {Title} from '../components'
 import {Form} from '../components'
+import {useNavigate} from 'react-router-dom'
 // import * as D from '../data'
 // import Card from './Card'
 
 export default function JoinContainer() {
   const setLabel = (wSize: number): object => {
     return {width: wSize + 'px', display: 'inline-block'}
+  }
+  const navigate = useNavigate()
+  const gotoLogin = () => {
+    navigate('/')
   }
 
   return (
@@ -104,7 +109,7 @@ export default function JoinContainer() {
             <span style={setLabel(70)}>가입</span>
           </button>
           <label htmlFor="exampleInputPassword1" style={setLabel(20)}></label>
-          <button type="button" className="btn btn-info">
+          <button type="button" className="btn btn-info" onClick={gotoLogin}>
             <span style={setLabel(70)}>취소</span>
           </button>
         </div>
