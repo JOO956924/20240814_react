@@ -1,0 +1,158 @@
+/* List.css */
+
+/* 전체 컨테이너 스타일 */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 상단 캐러셀 스타일 */
+.carousel {
+  width: 100%;
+  height: 300px;
+  background-color: #f0f0f0;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-slide {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 날짜 리스트 스타일 */
+.date-list {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.date-item {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin: 0 5px;
+}
+
+.date-item .date {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.date-item .day {
+  font-size: 14px;
+  color: #555;
+}
+
+/* 검색 폼 스타일 */
+.search-form {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.search-select {
+  width: 20%;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.search-input {
+  width: 60%;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.search-button {
+  width: 15%;
+  padding: 10px;
+  font-size: 18px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+/* 카드 리스트 스타일 */
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-info {
+  padding: 15px;
+}
+
+.card-info h3 {
+  font-size: 20px;
+  margin: 0 0 10px;
+}
+
+.card-info p {
+  margin: 5px 0;
+  color: #666;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .date-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .date-item {
+    margin: 5px 0;
+  }
+
+  .search-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-select,
+  .search-input,
+  .search-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}

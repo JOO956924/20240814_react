@@ -1,28 +1,31 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import {Provider as ReduxProvider} from 'react-redux'
-import {configureStore} from '@reduxjs/toolkit'
-import type {Action} from '@reduxjs/toolkit'
-import {BrowserRouter} from 'react-router-dom'
-import RoutesSetup from './routes/RoutesSetup'
+import './assets/styles.css'
 
-type AppState = {today: Date}
-const initialAppState = {today: new Date()}
-const rootReducer = (state: AppState = initialAppState, action: Action) => state
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddlware => getDefaultMiddlware()
-})
+import React from 'react'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import Join from './pages/members/Join'
 
-function App() {
+import Layout from './routes/Layout'
+import NoMatch from './routes/NoMatch'
+import Login from './pages/members/Login'
+import PrivateRoute from './routes/PrivateRoute'
+
+const App: React.FC = () => {
   return (
-    <ReduxProvider store={store}>
-      <BrowserRouter>
-        <RoutesSetup />
-      </BrowserRouter>
-    </ReduxProvider>
+    <Router>
+      <Routes>
+        {/* 로그인 페이지는 언제나 접근 가능 */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/join" element={<Join />} />
+
+        {/* PrivateRoute를 사용하여 인증이 필요한 경로 보호 */}
+        <Route path="/" element={<PrivateRoute component={Layout} />} />
+        <Route path="/feeds/list" element={<PrivateRoute component={Layout} />} />
+        <Route path="/feeds/read" element={<PrivateRoute component={Layout} />} />
+        <Route path="/feeds/modify" element={<PrivateRoute component={Layout} />} />
+        <Route path="/feeds/register" element={<PrivateRoute component={Layout} />} />
+        <Route path="*" element={<PrivateRoute component={NoMatch} />} />
+      </Routes>
+    </Router>
   )
 }
 

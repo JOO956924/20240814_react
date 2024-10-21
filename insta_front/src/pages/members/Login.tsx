@@ -1,6 +1,6 @@
 import type {ChangeEvent, FormEvent} from 'react'
 import {useState, useCallback, useEffect, useRef} from 'react'
-import {json, Link, useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {useAuth} from '../../contexts'
 import * as U from '../../utils'
 
@@ -21,7 +21,7 @@ export default function Login() {
   const {login} = useAuth()
   const loginAccount = useCallback(() => {
     login(email, pw, () => {
-      navigate('/')
+      navigate('/list')
     })
   }, [email, pw, navigate, login])
 
@@ -47,14 +47,19 @@ export default function Login() {
   const getSession = async (email: string, pw: string) => {
     try {
       new Promise((resolve, reject) => {
-        fetch('http://localhost:8080/api/auth/login', {
-          method: 'POST',
-          body: {email: email, pw: pw},
-          dataType: 'json'
+        // prettier ignore
+        fetch('http://localhost:8080/api/auth/login?email=' + email + '&pw=' + pw, {
+          method: 'POST'
         })
-          .then(res => res.json)
-          .then(json => {
-            console.log(json)
+          .then(res => res.text())
+          .then(token => {
+            if (token.startsWith('{"code"')) {
+              navigate('/login')
+            } else {
+              sessionStorage.setItem('token', token)
+              sessionStorage.setItem('email', email)
+              navigate('/feeds/list')
+            }
           })
           .catch(err => console.log('Error:', err))
       })
@@ -71,40 +76,44 @@ export default function Login() {
     emailRef.current?.focus()
   }, [])
   return (
-    <div className="flex flex-col pt-2 bg-gray-100 border border-gray-300 shadow-xl rounded-xl">
-      <div className="flex flex-col items-center justify-center flex-1 max-w-sm px-2 mx-auto">
-        <div className="w-full px-6 py-8 text-black bg-white rounded shadow-md">
+    <div>
+      <div className="flex flex-col items-center justify-center flex-1 max-w-sm mx-auto">
+        <div
+          className="w-full px-6 py-8 text-black rounded shadow-md"
+          style={{background: '#bd5d38'}}>
           <form method="post" onSubmit={onSubmit}>
-            <h1 className="mb-8 text-2xl font-bold text-center text-primary">Login</h1>
+            <h1 className="mb-8 text-4xl text-center text-white text-primary">
+              Insta Feeds
+            </h1>
             <input
               type="text"
               name="email"
               ref={emailRef}
-              className="w-full p-3 mb-4 input input-primary"
+              className="w-full p-3 mb-4 text-xl rounded-lg size-22"
               placeholder="Email"
-              value={email}
+              // value={email}
               onChange={changed('email')}
             />
             <input
               type="password"
               name="pw"
               ref={pwRef}
-              className="w-full p-3 mb-4 input input-primary"
+              className="w-full p-3 mb-4 text-xl rounded-lg size-22"
               placeholder="Password"
               value={pw}
               onChange={changed('pw')}
             />
             <button
               type="submit"
-              className="w-full btn btn-primary"
+              className="w-full p-3 mb-4 text-2xl text-black bg-yellow-400 rounded-lg size-16"
               onClick={loginAccount}>
               Login
             </button>
           </form>
         </div>
-        <div className="mt-6 text-grey-dark">
+        <div className="mt-6 text-lg text-grey-dark">
           Create account?
-          <Link className="btn btn-primary btn-link" to="/join">
+          <Link className="ml-5 text-lg" to="/join">
             Join
           </Link>
         </div>

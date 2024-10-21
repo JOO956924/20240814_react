@@ -1,7 +1,11 @@
+* {
+  padding: 0;
+  margin: 0;
+}
 #root {
-  max-width: 1280px;
+  width: 100vw;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 
@@ -39,4 +43,24 @@
 
 .read-the-docs {
   color: #888;
+}
+
+#navbar {
+  background-color: #bd5d38;
+  margin: 0;
+}
+
+.nav-items {
+  font-size: 23pt;
+  font-weight: bold;
+  color: #dab3a8;
+  padding: 0 0 10px 0;
+  text-transform: uppercase;
+}
+.mc-title {
+  font-family: impact;
+  font-size: 40pt;
+  color: #bd5d38;
+  text-transform: uppercase;
+  text-align: left;
 }
