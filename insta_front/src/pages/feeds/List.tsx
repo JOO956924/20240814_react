@@ -189,8 +189,9 @@ export default function List() {
             style={{borderRadius: '5px', fontSize: '22px'}}
             ref={refKeyword}
             disabled={inverted}
+            // readOnly={!inverted}
             onChange={e => {
-              // console.log(refKeyword.current?.readOnly)
+              console.log(refKeyword.current?.readOnly)
               setKeywords(e.target.value)
             }}
             value={pageRequestDTO.keyword ?? keywords}
@@ -206,7 +207,7 @@ export default function List() {
               Search
             </button>
             <button
-              type="button"
+              onClick={goRegister}
               style={{
                 fontSize: '30px',
                 marginLeft: '10px',
@@ -214,8 +215,8 @@ export default function List() {
                 color: '#bd5d38',
                 border: '1px solid #bd5d38'
               }}
-              className="btn btn-outline-secondary"
-              onClick={goRegister}>
+              type="button"
+              className="btn btn-outline-secondary">
               Register
             </button>
           </div>
@@ -314,7 +315,6 @@ export default function List() {
       <div
         className="modal fade"
         id="myModal"
-        style={{background: 'pink'}}
         aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div className="modal-dialog">

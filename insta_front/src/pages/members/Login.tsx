@@ -21,7 +21,7 @@ export default function Login() {
   const {login} = useAuth()
   const loginAccount = useCallback(() => {
     login(email, pw, () => {
-      navigate('/list')
+      navigate('/')
     })
   }, [email, pw, navigate, login])
 

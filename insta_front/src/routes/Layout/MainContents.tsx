@@ -2,7 +2,7 @@ import type {FC, CSSProperties} from 'react'
 import FeedsList from '../../pages/feeds/List'
 import {useLocation} from 'react-router-dom'
 import Register from '../../pages/feeds/Register'
-import Modify from '../../pages/feeds/Modify'
+import Modify from '../../pages/feeds/Moidify'
 import Read from '../../pages/feeds/Read'
 
 export type MainContentsProps = {
@@ -12,14 +12,13 @@ export type MainContentsProps = {
 export const MainContents: FC<MainContentsProps> = ({style}) => {
   const location = useLocation()
   // const queryString = location.search
-  const {pathname} = location
-  let pathnames = pathname
+  let {pathname} = location
 
   // 경로에 따른 컴포넌트 선택
   const renderContent = () => {
     switch (pathname) {
       case '/':
-        pathnames = '/feeds/list'
+        pathname = '/feeds/list'
         return <FeedsList />
       case '/feeds/list':
         return <FeedsList />

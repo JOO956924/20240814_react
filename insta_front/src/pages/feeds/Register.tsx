@@ -1,6 +1,7 @@
-import {FormEvent, useCallback, useRef, useState} from 'react'
+import {FormEvent, useCallback, useEffect, useRef, useState} from 'react'
 import {useNavigate, useSearchParams} from 'react-router-dom'
 import useToken from '../../hooks/useToken'
+// PhotosDTO 구조 정의
 interface PhotosDTO {
   uuid: string | Blob
   photosName: string | Blob
@@ -8,7 +9,8 @@ interface PhotosDTO {
 }
 
 export default function Register() {
-  const [query] = useSearchParams() // url주소의 쿼리를 받을 때
+  // 주소의 쿼리를 받기 위한 선언
+  const [query] = useSearchParams()
   const token = useToken()
   const navigate = useNavigate()
 
@@ -25,6 +27,7 @@ export default function Register() {
       alert('파일사이즈 초과')
       return false
     }
+    //const regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$"); //i대소문자구분X
     const regex = new RegExp('(.*?).(jpg|jpeg|png|gif|bmp|pdf)$', 'i')
     if (!regex.test(fileName)) {
       alert('해당파일 업로드 금지!')
@@ -36,18 +39,19 @@ export default function Register() {
   const fileChange = useCallback(() => {
     const formData = new FormData()
     const fileName = refFile.current?.value.split('\\').pop()
-    // console.log(fileName)
+    console.log(fileName)
     const flist = refFile.current?.files ?? []
     const flistLength = flist?.length ?? 0
-    // console.log(flist?.length)
+    console.log(flist?.length, isNaN(flistLength))
 
     const tmpLabel =
-      (flist?.length ?? 0) - 1 == 0 ? '' : `${fileName} 외 ${(flist?.length ?? 0) - 1}개`
+      (flist?.length ?? 0) - 1 === 0 ? '' : `${fileName} 외 ${(flist?.length ?? 0) - 1}개`
+    console.log(tmpLabel)
     setLabelFile(tmpLabel)
 
     let appended = false // 파일이 잘 추가되는지 확인
     for (let i = 0; i < flistLength; i++) {
-      if (!checkExtension(flist[i].name, flist[i].size)) {
+      if (!checkExtension(flist[i]?.name, flist[i].size)) {
         if (refFile?.current?.value !== undefined) refFile.current.value = ''
         appended = false
         break
@@ -55,15 +59,18 @@ export default function Register() {
       formData.append('uploadFiles', flist[i])
       appended = true
     }
+
     if (!appended) return
     for (const value of formData.values()) console.log(value)
-    const url = 'http://localhost:8080/api/uploadAjax'
+    let url = 'http://localhost:8080/api/uploadAjax'
+
     fetch(url, {
       method: 'POST',
       body: formData,
       headers: {
-        Authorization: `Bearer ${token}`
+        // 'Content-Type': 'multipart/form-data'
       }
+      // dataType: 'json'
     })
       .then(res => res.json())
       .then(json => {
@@ -95,10 +102,7 @@ export default function Register() {
         fetch(removeUrl + fileName, {
           method: 'POST',
           dataType: 'json',
-          fileName: fileName,
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          fileName: fileName
         })
           .then(response => response.json())
           .then(json => {
@@ -114,10 +118,8 @@ export default function Register() {
   const transform = (str: string) => {
     return str.replace(/\n/g, '')
   }
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     let compare = query.get('page') // 기본적으로 페이지 1을 사용
     const page = compare === 'null' || compare == null ? '1' : compare
     compare = query.get('type')
@@ -127,21 +129,21 @@ export default function Register() {
 
     const formData = new FormData(e.currentTarget)
 
-    if (refTitle.current?.value === '' || refTitle.current?.value == null) {
-      refTitle.current?.focus()
-      return
+    const title = refTitle.current
+    if (title?.value == '') {
+      title.focus()
+      return false
     }
 
     let str = ''
     const liArr = document.querySelectorAll('.uploadResult ul li')
     let arr: PhotosDTO[] = []
-
     for (let i = 0; i < liArr.length; i++) {
       str += `
-        <input type="hidden" name="photosDTOList[${i}].photosName" value="${liArr[i].dataset.name}" />
-        <input type="hidden" name="photosDTOList[${i}].path" value="${liArr[i].dataset.path}" />
-        <input type="hidden" name="photosDTOList[${i}].uuid" value="${liArr[i].dataset.uuid}" />
-      `
+            <input type="hidden" name="photosDTOList[${i}].photosName" value="${liArr[i].dataset.name}">
+            <input type="hidden" name="photosDTOList[${i}].path" value="${liArr[i].dataset.path}">
+            <input type="hidden" name="photosDTOList[${i}].uuid" value="${liArr[i].dataset.uuid}">
+          `
       arr.push({
         photosName: liArr[i].dataset.name,
         path: liArr[i].dataset.path,
@@ -151,14 +153,16 @@ export default function Register() {
     setInputHiddens(str)
 
     arr.forEach((photo, index) => {
-      formData.append(`phtosDTOList[${index}].uuid`, photo.uuid)
-      formData.append(`phtosDTOList[${index}].photosName`, photo.photosName)
-      formData.append(`phtosDTOList[${index}].path`, photo.path)
+      formData.append(`photosDTOList[${index}].uuid`, photo.uuid)
+      formData.append(`photosDTOList[${index}].photosName`, photo.photosName)
+      formData.append(`photosDTOList[${index}].path`, photo.path)
     })
+
+    // for (const key of formData.keys()) console.log(key, ':', formData.get(key))
 
     const formDataObj = {
       title: refTitle.current?.value ?? '',
-      photosDTOList: arr
+      photosDTOList: arr // PhotosDTO 타입의 배열 (클라이언트에서 JSON으로 보낼 데이터)
     }
 
     let resMessage = ''
@@ -182,7 +186,7 @@ export default function Register() {
         `/feeds/list?page=${page}&type=${type}&keyword=${keyword}&$msg=${resMessage}`
       )
     } else {
-      navigate('/')
+      navigate(`/`)
     }
   }
 
@@ -206,15 +210,15 @@ export default function Register() {
             className="form-control"
             placeholder="타이틀을 입력하세요"
           />
+          {/* <input type="hidden" name="token" value={token ?? ''} /> */}
         </div>
         <div className="form-group">
           <label
             htmlFor="fileInput"
             style={{fontSize: '22px'}}
             ref={refLabelFile}
-            defaultValue={labelFile ?? ''}>
-            Select Image Files
-          </label>
+            value={labelFile ?? 'Select Image Files'}
+          />
           <input
             type="file"
             id="fileInput"
@@ -230,15 +234,14 @@ export default function Register() {
           dangerouslySetInnerHTML={{__html: transform(inputHiddens)}}></div>
         <div className="form-group">
           <button
-            type="submit"
-            id="btnSend"
-            className="btn btn-secondary"
             style={{
               fontSize: '30px',
               background: 'white',
-              color: 'bd5d38',
+              color: '#bd5d38',
               border: '1px solid #bd5d38'
-            }}>
+            }}
+            type="submit"
+            className="btn btn-outline-secondary">
             Submit
           </button>
         </div>

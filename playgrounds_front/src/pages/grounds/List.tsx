@@ -2,6 +2,7 @@ import {FormEvent, useEffect, useRef, useState} from 'react'
 import useToken from '../../hooks/useToken'
 import {useNavigate, useSearchParams} from 'react-router-dom'
 import './List.css' // 필요한 스타일을 위한 별도 CSS 파일
+import Calendar from '../../components/Calendar' // Calendar 컴포넌트를 import
 
 // Grounds 데이터 구조 정의
 interface Grounds {
@@ -94,6 +95,9 @@ export default function List() {
 
   return (
     <div className="container">
+      {/* 현재 시간 달력 */}
+      <Calendar />
+
       {/* 상단 캐러셀 */}
       <div className="carousel">
         <div className="carousel-slide">
