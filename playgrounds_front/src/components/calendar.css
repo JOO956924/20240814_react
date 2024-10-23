@@ -1,60 +1,40 @@
+/* Calendar.css */
 .calendar-container {
-  width: 300px;
-  background-color: #2a2a2a;
-  color: white;
-  border-radius: 10px;
+  background-color: #f9f9f9;
   padding: 20px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .calendar-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 10px;
-}
-
-.calendar-header span {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.calendar-header button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-gap: 10px;
+  gap: 10px;
 }
 
+.calendar-day,
 .calendar-day-name {
   text-align: center;
-  font-weight: bold;
-}
-
-.calendar-day {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #3b3b3b;
+  padding: 10px;
   border-radius: 50%;
+  background-color: #eee; /* 기본 배경색 */
   cursor: pointer;
 }
 
-.calendar-day.empty {
-  background-color: transparent;
-  cursor: default;
+.calendar-day:hover {
+  background-color: #ddd; /* 마우스를 올렸을 때 배경색 */
 }
 
 .calendar-day.selected {
-  background-color: #00bfff; /* 선택된 날짜를 강조하는 색상 */
-  font-weight: bold;
-  color: white;
+  background-color: #007bff; /* 선택된 날짜 배경색 */
+  color: white; /* 선택된 날짜 글자색 */
+  font-weight: bold; /* 선택된 날짜 폰트 굵게 */
+  border: 2px solid #0056b3; /* 선택된 날짜 테두리 */
 }

@@ -1,22 +1,14 @@
+/* 기본 컨테이너 설정 */
 .container {
   width: 100%;
   padding: 20px;
-}
-
-.calendar {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.calendar h2 {
-  margin: 0;
-  font-size: 1.5rem;
 }
 
 .carousel {
   margin-bottom: 20px;
 }
 
+/* 검색 폼 스타일 */
 .search-form {
   display: flex;
   justify-content: center;
@@ -29,22 +21,75 @@
   margin: 0 5px;
 }
 
+/* 카드 리스트 스타일 */
 .card-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column; /* 카드 리스트를 세로로 배치 */
+  gap: 10px;
 }
 
-.card {
-  width: 30%;
-  margin: 10px;
+/* 카드 행 스타일 */
+.card-row {
+  display: flex;
+  align-items: center;
+  background-color: #007bff; /* 카드의 배경색 */
+  padding: 15px;
+  border-radius: 5px;
+  width: 90%; /* 카드의 너비를 더 길게 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
+  color: white;
+}
+
+/* 시간 정보 스타일 */
+.ground-time {
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 20px;
+  width: 100px; /* 시간 표시 너비 고정 */
+}
+
+/* 카드 정보 스타일 */
+.card-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
   cursor: pointer;
 }
 
-.card-image {
-  width: 100%;
-  height: auto;
+/* 카드 내 내용 스타일 */
+.card-content {
+  display: flex;
+  flex-direction: column; /* 정보를 세로로 나열 */
+  gap: 5px;
+  text-align: left;
 }
 
-.card-info {
-  text-align: center;
+/* 각 정보 스타일 */
+.location-info,
+.sports-info,
+.game-info {
+  font-size: 16px; /* 각 정보의 글자 크기 설정 */
+  color: white; /* 텍스트 색상 */
+}
+
+/* 버튼 스타일 */
+.card-button {
+  text-align: right;
+}
+
+.card-button button {
+  background: #fff;
+  color: #007bff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* 버튼에 마우스 오버 시 스타일 */
+.card-button button:hover {
+  background: #0056b3; /* 버튼 배경색 변경 */
+  color: #fff; /* 텍스트 색상 변경 */
 }

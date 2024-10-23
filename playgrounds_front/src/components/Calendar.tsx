@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import {useNavigate, useSearchParams} from 'react-router-dom' // useNavigate, useSearchParams 사용
-import './Calendar.css' // 필요한 CSS 파일
 
 const Calendar = () => {
   const today = new Date()
@@ -72,16 +71,25 @@ const Calendar = () => {
   const renderDays = () => {
     const days = []
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="calendar-day empty"></div>)
+      days.push(<div key={`empty-${i}`} style={{padding: '10px'}}></div>)
     }
     for (let i = 1; i <= daysInMonth; i++) {
       const isSelected = i === selectedDay // 검색된 day 값으로 강조
       days.push(
         <div
           key={i}
-          className={`calendar-day ${isSelected ? 'selected' : ''}`} // 선택된 날짜만 강조
           onClick={() => handleDayClick(i)} // 날짜 클릭 이벤트 추가
-        >
+          style={{
+            textAlign: 'center',
+            padding: '10px',
+            borderRadius: '50%',
+            backgroundColor: '#eee', // 선택 전과 동일한 배경색 유지
+            color: isSelected ? '#333' : '#333', // 글자 색상 고정
+            fontWeight: isSelected ? 'bold' : 'normal', // 선택된 날짜일 경우 폰트를 굵게 설정
+            fontSize: '16px', // 글자 크기는 고정 (변경 없음)
+            border: 'none', // 선택 전후 모두 테두리 제거
+            cursor: 'pointer'
+          }}>
           {i}
         </div>
       )
@@ -90,17 +98,25 @@ const Calendar = () => {
   }
 
   return (
-    <div className="calendar-container">
-      <div className="calendar-header">
+    <div
+      style={{
+        backgroundColor: '#f9f9f9',
+        padding: '20px',
+        borderRadius: '10px',
+        width: 'fit-content',
+        margin: '0 auto'
+      }}>
+      <div
+        style={{display: 'flex', justifyContent: 'space-between', marginBottom: '10px'}}>
         <button onClick={() => changeMonth(-1)}>◀</button>
         <span>
           {year}년 {month + 1}월
         </span>
         <button onClick={() => changeMonth(1)}>▶</button>
       </div>
-      <div className="calendar-grid">
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '10px'}}>
         {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
-          <div key={idx} className="calendar-day-name">
+          <div key={idx} style={{textAlign: 'center', padding: '10px', fontSize: '16px'}}>
             {day}
           </div>
         ))}

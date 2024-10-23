@@ -7,12 +7,15 @@ import Calendar from '../../components/Calendar' // Calendar 컴포넌트를 imp
 // Grounds 데이터 구조 정의
 interface Grounds {
   gno: number
-  title: string
+  gtitle: string
   gphotosDTOList: {path: string}[]
   greviewsCnt: number
   nowpeople: number
   maxpeople: number
   price: number
+  groundsTime: string // 시간 필드 (HH:mm 또는 HH:mm:ss 형식 가정)
+  location: string
+  sports: string
   regDate: string
 }
 
@@ -51,9 +54,9 @@ export default function List() {
 
   const options = [
     {value: '', label: '선택하세요'},
-    {value: 't', label: '제목'},
-    {value: 'c', label: '내용'},
-    {value: 'w', label: '작성자'}
+    {value: 't', label: 'title'},
+    {value: 'c', label: 'sports'},
+    {value: 'w', label: 'location'}
   ]
 
   useEffect(() => {
@@ -79,8 +82,25 @@ export default function List() {
       })
         .then(res => res.json())
         .then(data => {
+          // groundsTime으로 데이터 정렬
+          const sortedData = data.pageResultDTO.dtoList.sort((a: Grounds, b: Grounds) => {
+            const timeA = a.groundsTime.split(':').map(Number) // [HH, mm, ss]
+            const timeB = b.groundsTime.split(':').map(Number) // [HH, mm, ss]
+
+            // 시간순으로 비교
+            for (let i = 0; i < timeA.length; i++) {
+              if (timeA[i] !== timeB[i]) {
+                return timeA[i] - timeB[i]
+              }
+            }
+            return 0
+          })
+
           setPageRequestDTO(data.pageRequestDTO)
-          setPageResultDTO(data.pageResultDTO)
+          setPageResultDTO({
+            ...data.pageResultDTO,
+            dtoList: sortedData
+          })
         })
         .catch(err => console.log('Error:', err))
     }
@@ -95,16 +115,19 @@ export default function List() {
 
   return (
     <div className="container">
-      {/* 현재 시간 달력 */}
-      <Calendar />
-
       {/* 상단 캐러셀 */}
       <div className="carousel">
         <div className="carousel-slide">
-          <img src="path_to_your_image" alt="슬라이드 이미지" />
+          <img src="/sisul_01_04_01.jpg" alt="슬라이드 이미지 1" />
+        </div>
+        <div className="carousel-slide">
+          <img src="/sisul_01_04_02.jpg" alt="슬라이드 이미지 2" />
         </div>
         {/* 더 많은 슬라이드를 추가할 수 있음 */}
       </div>
+
+      {/* 현재 시간 달력 - 캐러셀 밑으로 이동 */}
+      <Calendar />
 
       {/* 검색 폼 */}
       <form className="search-form">
@@ -128,20 +151,19 @@ export default function List() {
       {/* 카드 리스트 */}
       <div className="card-list">
         {pageResultDTO?.dtoList.map(ground => (
-          <div
-            key={ground.gno}
-            className="card"
-            onClick={() => navigate(`/grounds/read?gno=${ground.gno}`)}>
-            <img
-              src={ground.gphotosDTOList[0]?.path || 'default_image.jpg'}
-              alt="Ground"
-              className="card-image"
-            />
-            <div className="card-info">
-              <h3>{ground.title}</h3>
-              <p>리뷰 수: {ground.greviewsCnt}</p>
-              <p>가격: {ground.price}</p>
-              <p>등록일: {new Date(ground.regDate).toLocaleDateString()}</p>
+          <div key={ground.gno} className="card-row">
+            <div className="ground-time">{ground.groundsTime}</div>
+            <div
+              className="card-info"
+              onClick={() => navigate(`/grounds/read?gno=${ground.gno}`)}>
+              <div className="card-content">
+                <span className="location-info">위치: {ground.location}</span>
+                <span className="sports-info">종목: {ground.sports}</span>
+                <span className="game-info">경기명: {ground.gtitle}</span>
+              </div>
+              <div className="card-button">
+                <button>마감여부</button>
+              </div>
             </div>
           </div>
         ))}

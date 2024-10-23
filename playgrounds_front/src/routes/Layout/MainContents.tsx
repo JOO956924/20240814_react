@@ -11,34 +11,29 @@ export type MainContentsProps = {
 
 export const MainContents: FC<MainContentsProps> = ({style}) => {
   const location = useLocation()
-  // const queryString = location.search
   const {pathname} = location
-  let pathnames = pathname
 
   // 경로에 따른 컴포넌트 선택
   const renderContent = () => {
     switch (pathname) {
       case '/':
-        pathnames = '/grounds/list'
         return <GroundsList />
       case '/grounds/list':
         return <GroundsList />
       case '/grounds/register':
-        return <Register /> // 다른 컴포넌트 렌더링
+        return <Register />
       case '/grounds/read':
-        return <Read /> // 다른 컴포넌트 렌더링
+        return <Read />
       case '/grounds/modify':
-        return <Modify /> // 다른 컴포넌트 렌더링
+        return <Modify />
       default:
-        return <h2>Page Not Found</h2> // 기본 경로 (404 대체)
+        return <h2>Page Not Found</h2>
     }
   }
 
   return (
-    // <!-- Page Content-->
-    <div className="p-0 container-fluid" style={{marginTop: '10px', textAlign: 'left'}}>
-      {/* <!-- About--> */}
-      <section id="about" style={{margin: '0 40px', height: '100vh'}}>
+    <div className="p-0 container-fluid" style={style}>
+      <section id="about" style={{margin: '0 40px', minHeight: '100vh'}}>
         <div className="resume-section-content">
           <h1 className="mt-4">
             <span className="text-primary">Insta </span>
@@ -47,7 +42,7 @@ export const MainContents: FC<MainContentsProps> = ({style}) => {
                 fontSize: '32px',
                 paddingLeft: '10px',
                 display: 'inline-block',
-                width: '250px'
+                width: '1000px'
               }}>
               {pathname}
             </div>
