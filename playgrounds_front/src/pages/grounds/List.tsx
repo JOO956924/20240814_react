@@ -1,6 +1,9 @@
 import {FormEvent, useEffect, useRef, useState} from 'react'
 import useToken from '../../hooks/useToken'
 import {useNavigate, useSearchParams} from 'react-router-dom'
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 import './List.css' // 필요한 스타일을 위한 별도 CSS 파일
 import Calendar from '../../components/Calendar' // Calendar 컴포넌트를 import
 
@@ -113,18 +116,36 @@ export default function List() {
     navigate(`/grounds/list?type=${type}&keyword=${keyword}&page=1`)
   }
 
+  // React Slick 설정
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000
+  }
+
   return (
     <div className="container">
       {/* 상단 캐러셀 */}
-      <div className="carousel">
+      <Slider {...sliderSettings}>
         <div className="carousel-slide">
-          <img src="/sisul_01_04_01.jpg" alt="슬라이드 이미지 1" />
+          <img
+            src="/sisul_01_04_01.jpg"
+            alt="슬라이드 이미지 1"
+            style={{width: '100%', height: 'auto', objectFit: 'cover'}}
+          />
         </div>
         <div className="carousel-slide">
-          <img src="/sisul_01_04_02.jpg" alt="슬라이드 이미지 2" />
+          <img
+            src="/sisul_01_04_02.jpg"
+            alt="슬라이드 이미지 2"
+            style={{width: '100%', height: 'auto', objectFit: 'cover'}}
+          />
         </div>
-        {/* 더 많은 슬라이드를 추가할 수 있음 */}
-      </div>
+      </Slider>
 
       {/* 현재 시간 달력 - 캐러셀 밑으로 이동 */}
       <Calendar />
