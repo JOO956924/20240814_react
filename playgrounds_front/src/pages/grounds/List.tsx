@@ -4,22 +4,21 @@ import {useNavigate, useSearchParams} from 'react-router-dom'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import './List.css' // 필요한 스타일을 위한 별도 CSS 파일
-import Calendar from '../../components/Calendar' // Calendar 컴포넌트를 import
+import './List.css'
+import Calendar from '../../components/Calendar'
 
 // Grounds 데이터 구조 정의
 interface Grounds {
   gno: number
-  gtitle: string
+  title: string
   gphotosDTOList: {path: string}[]
-  greviewsCnt: number
-  nowpeople: number
-  maxpeople: number
-  price: number
-  groundsTime: string // 시간 필드 (HH:mm 또는 HH:mm:ss 형식 가정)
+  reviewsCnt: number
+  likes: number
+  regDate: string
+  groundsTime: string
   location: string
   sports: string
-  regDate: string
+  maxpeople: number
 }
 
 // PageRequestDTO 구조 정의
@@ -47,6 +46,8 @@ export default function List() {
   const [query] = useSearchParams()
   const refType = useRef<HTMLSelectElement | null>(null)
   const refKeyword = useRef<HTMLInputElement | null>(null)
+  const refBtnSrch = useRef<HTMLButtonElement | null>(null)
+
   const [pageRequestDTO, setPageRequestDTO] = useState<PageRequestDTO>({
     page: '',
     size: '',
@@ -54,26 +55,40 @@ export default function List() {
     keyword: ''
   })
   const [pageResultDTO, setPageResultDTO] = useState<PageResultDTO | null>(null)
+  const [inverted, setInverted] = useState(true)
+  const [keywords, setKeywords] = useState('')
+  const [types, setTypes] = useState('')
 
   const options = [
     {value: '', label: '선택하세요'},
-    {value: 't', label: 'title'},
-    {value: 'c', label: 'sports'},
-    {value: 'w', label: 'location'}
+    {value: 't', label: '제목'},
+    {value: 'c', label: '내용'},
+    {value: 'w', label: '작성자'},
+    {value: 'tc', label: '제목 + 내용'},
+    {value: 'tcw', label: '제목 + 내용 + 작성자'}
   ]
 
   useEffect(() => {
-    // API 호출 및 데이터 설정 로직
+    let compare = query.get('page')
+    const page = compare === 'null' || compare == null ? '1' : compare
+    compare = query.get('type')
+    const type = compare === 'null' || compare == null ? '' : compare
+    compare = query.get('keyword')
+    const keyword = compare === 'null' || compare == null ? '' : compare
+
     let url = 'http://localhost:8080/api/grounds/list'
     const queryParams = []
-    const page = query.get('page') || '1'
-    const type = query.get('type') || ''
-    const keyword = query.get('keyword') || ''
 
-    if (type) queryParams.push(`type=${type}`)
+    if (type) {
+      setTypes(type)
+      setInverted(false)
+      queryParams.push(`type=${type}`)
+    }
     if (page) queryParams.push(`page=${page}`)
-    if (keyword) queryParams.push(`keyword=${keyword}`)
-
+    if (keyword) {
+      setInverted(false)
+      queryParams.push(`keyword=${keyword}`)
+    }
     if (queryParams.length > 0) url += '?' + queryParams.join('&')
 
     if (token) {
@@ -83,40 +98,47 @@ export default function List() {
           Authorization: `Bearer ${token}`
         }
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`)
+          }
+          return res.json()
+        })
         .then(data => {
-          // groundsTime으로 데이터 정렬
-          const sortedData = data.pageResultDTO.dtoList.sort((a: Grounds, b: Grounds) => {
-            const timeA = a.groundsTime.split(':').map(Number) // [HH, mm, ss]
-            const timeB = b.groundsTime.split(':').map(Number) // [HH, mm, ss]
-
-            // 시간순으로 비교
-            for (let i = 0; i < timeA.length; i++) {
-              if (timeA[i] !== timeB[i]) {
-                return timeA[i] - timeB[i]
-              }
-            }
-            return 0
-          })
-
           setPageRequestDTO(data.pageRequestDTO)
-          setPageResultDTO({
-            ...data.pageResultDTO,
-            dtoList: sortedData
-          })
+          setPageResultDTO(data.pageResultDTO)
         })
         .catch(err => console.log('Error:', err))
     }
-  }, [query, token])
+  }, [query, types, token])
+
+  const url = `/grounds`
 
   const getSearch = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    const keyword = refKeyword.current?.value
-    const type = refType.current?.value
-    navigate(`/grounds/list?type=${type}&keyword=${keyword}&page=1`)
+
+    const keywordw = refKeyword.current?.value
+    const typew = refType.current?.value
+
+    if (!keywordw) {
+      refKeyword.current?.focus()
+      return
+    }
+
+    navigate(url + `/list?type=${typew}&keyword=${keywordw}&page=1`)
+    setKeywords('')
+    setTypes('')
   }
 
-  // React Slick 설정
+  const goRead = (gno: number, page: number, type: string, keyword: string) => {
+    location.href = url + `/read?gno=${gno}&page=${page}&type=${type}&keyword=${keyword}`
+  }
+  const goRegister = () => {
+    location.href =
+      url +
+      `/register?page=${pageRequestDTO.page}&type=${pageRequestDTO.type}&keyword=${pageRequestDTO.keyword}`
+  }
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -129,7 +151,6 @@ export default function List() {
 
   return (
     <div className="container">
-      {/* 상단 캐러셀 */}
       <Slider {...sliderSettings}>
         <div className="carousel-slide">
           <img
@@ -147,48 +168,147 @@ export default function List() {
         </div>
       </Slider>
 
-      {/* 현재 시간 달력 - 캐러셀 밑으로 이동 */}
       <Calendar />
 
-      {/* 검색 폼 */}
-      <form className="search-form">
-        <select ref={refType} className="search-select">
-          {options.map((option, idx) => (
-            <option key={idx} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <input
-          ref={refKeyword}
-          className="search-input"
-          placeholder="검색어를 입력하세요"
-        />
-        <button onClick={getSearch} className="search-button">
-          검색
-        </button>
+      <form method="GET" className="search-form">
+        <div className="input-group">
+          <div className="input-group-prepend" style={{marginRight: '10px'}}>
+            <select
+              className="form-control"
+              style={{fontSize: '22px'}}
+              ref={refType}
+              name="type"
+              value={types}
+              onChange={e => {
+                if (e) {
+                  setTypes(refType.current?.value ?? '')
+                  if (e.target.selectedIndex === 0) {
+                    if (!keywords) setKeywords('')
+                    setInverted(true)
+                    if (refKeyword.current?.value) {
+                      setKeywords('')
+                    }
+                    navigate(`/`)
+                  } else if (e.target.value !== types) {
+                    if (!keywords) {
+                      setKeywords('')
+                    }
+                    setInverted(false)
+                    if (refKeyword.current?.value) {
+                      setKeywords('')
+                    }
+                    navigate(`/`)
+                    refKeyword.current?.focus()
+                  } else {
+                    setInverted(false)
+                  }
+                }
+                setTypes(e.target.value)
+              }}>
+              {options.map((item, idx) => (
+                <option key={idx} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <input
+            type="text"
+            className="form-control"
+            name="keyword"
+            style={{borderRadius: '5px', fontSize: '22px'}}
+            ref={refKeyword}
+            disabled={inverted}
+            onChange={e => {
+              setKeywords(e.target.value)
+            }}
+            value={keywords}
+          />
+          <div className="input-group-append" style={{marginLeft: '10px'}}>
+            <button
+              type="button"
+              style={{fontSize: '30px'}}
+              className="btn btn-outline-primary btnSearch"
+              onClick={getSearch}
+              ref={refBtnSrch}
+              disabled={inverted}>
+              Search
+            </button>
+            <button
+              type="button"
+              style={{
+                fontSize: '30px',
+                marginLeft: '10px',
+                background: 'white',
+                color: '#bd5d38',
+                border: '1px solid #bd5d38'
+              }}
+              className="btn btn-outline-secondary"
+              onClick={goRegister}>
+              Register
+            </button>
+          </div>
+        </div>
       </form>
 
-      {/* 카드 리스트 */}
       <div className="card-list">
         {pageResultDTO?.dtoList.map(ground => (
           <div key={ground.gno} className="card-row">
             <div className="ground-time">{ground.groundsTime}</div>
             <div
               className="card-info"
-              onClick={() => navigate(`/grounds/read?gno=${ground.gno}`)}>
+              onClick={() =>
+                goRead(
+                  ground.gno,
+                  pageResultDTO.page,
+                  pageRequestDTO.type,
+                  pageRequestDTO.keyword
+                )
+              }>
               <div className="card-content">
                 <span className="location-info">위치: {ground.location}</span>
                 <span className="sports-info">종목: {ground.sports}</span>
-                <span className="game-info">경기명: {ground.gtitle}</span>
+                <span className="game-info">경기명: {ground.title}</span>
               </div>
               <div className="card-button">
-                <button>마감여부</button>
+                <span className="people-info">모집 인원: {ground.maxpeople}</span>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      <ul className="pagination h-100 justify-content-center align-items-center">
+        {pageResultDTO?.prev && (
+          <li className="page-item">
+            <a
+              className="page-link"
+              href={`/grounds/list?page=${Math.max(1, pageResultDTO.start - 1)}`}>
+              Prev
+            </a>
+          </li>
+        )}
+        {pageResultDTO?.pageList.map(page => (
+          <li
+            key={page}
+            className={`page-item ${pageResultDTO?.page === page ? 'active' : ''}`}>
+            <a
+              className="page-link"
+              href={`/grounds/list?page=${page}&type=${query.get(
+                'type'
+              )}&keyword=${query.get('keyword')}`}>
+              {page}
+            </a>
+          </li>
+        ))}
+        {pageResultDTO?.next && (
+          <li className="page-item">
+            <a className="page-link" href={`/grounds/list?page=${pageResultDTO.end + 1}`}>
+              Next
+            </a>
+          </li>
+        )}
+      </ul>
     </div>
   )
 }
